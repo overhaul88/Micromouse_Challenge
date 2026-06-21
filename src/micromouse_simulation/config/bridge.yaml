@@ -1,0 +1,45 @@
+# Wheel commands/feedback don't need bridging - gz_ros2_control exposes
+# those as native ROS topics/services via controller_manager directly.
+# Only the sim clock and the three IR sensors cross the Gazebo<->ROS
+# boundary here.
+
+- ros_topic_name: "/clock"
+  gz_topic_name: "/clock"
+  ros_type_name: "rosgraph_msgs/msg/Clock"
+  gz_type_name: "gz.msgs.Clock"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/ir_front"
+  gz_topic_name: "/ir_front"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/ir_left"
+  gz_topic_name: "/ir_left"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/ir_right"
+  gz_topic_name: "/ir_right"
+  ros_type_name: "sensor_msgs/msg/LaserScan"
+  gz_type_name: "gz.msgs.LaserScan"
+  direction: GZ_TO_ROS
+
+- ros_topic_name: "/imu"
+  gz_topic_name: "/imu"
+  ros_type_name: "sensor_msgs/msg/Imu"
+  gz_type_name: "gz.msgs.IMU"
+  direction: GZ_TO_ROS
+
+# Ground-truth poses of all dynamic entities, straight from the physics
+# engine. Used only for offline analysis (compare the robot's true world
+# pose against the dead-reckoned /odom to see exactly when/where odometry
+# diverges from reality). The robot model appears as child_frame_id
+# "micromouse".
+- ros_topic_name: "/ground_truth/tf"
+  gz_topic_name: "/world/maze_16x16/dynamic_pose/info"
+  ros_type_name: "tf2_msgs/msg/TFMessage"
+  gz_type_name: "gz.msgs.Pose_V"
+  direction: GZ_TO_ROS

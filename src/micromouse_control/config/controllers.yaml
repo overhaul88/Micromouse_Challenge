@@ -1,0 +1,16 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 200  # Hz, matches the physics step rate
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    wheel_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+wheel_velocity_controller:
+  ros__parameters:
+    joints:
+      - left_wheel_joint
+      - right_wheel_joint
+    interface_name: velocity
