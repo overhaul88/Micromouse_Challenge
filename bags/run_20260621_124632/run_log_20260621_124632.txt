@@ -1,0 +1,117 @@
+[INFO] [launch]: All log files can be found below /home/acer/.ros/log/2026-06-21-12-46-32-821644-DESKTOP-FDAKLMM-44468
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [ros2-1]: process started with pid [44472]
+[INFO] [gazebo-2]: process started with pid [44473]
+[INFO] [robot_state_publisher-3]: process started with pid [44474]
+[INFO] [create-4]: process started with pid [44476]
+[INFO] [parameter_bridge-5]: process started with pid [44477]
+[INFO] [pid_controller_node-6]: process started with pid [44478]
+[INFO] [solver_node-7]: process started with pid [44479]
+[create-4] [INFO] [1782045993.638950661] [spawn_micromouse]: Requesting list of world names.
+[solver_node-7] [INFO] [1782045993.641806992] [solver_node]: solver_node ready, mode=auto, goal block at (7,7)
+[pid_controller_node-6] [INFO] [1782045993.648957322] [pid_controller_node]: pid_controller_node ready, control rate 100.0 Hz
+[robot_state_publisher-3] [WARN] [1782045993.663930258] [kdl_parser]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+[robot_state_publisher-3] [INFO] [1782045993.664126681] [robot_state_publisher]: Robot initialized
+[ros2-1] [WARN] [ros2bag]: Positional "topics" argument deprecated. Please use optional "--topics" argument instead.
+[ros2-1] stdin is not a terminal device. Keyboard handling disabled.[INFO] [1782045994.098139814] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[ros2-1] [INFO] [1782045994.098194620] [rosbag2_recorder]: Event publisher thread: Started
+[ros2-1] [INFO] [1782045994.108936966] [rosbag2_recorder]: Starting recording to '/home/acer/workspace/rws/micromouse_ws/bags/run_20260621_124632'
+[ros2-1] [INFO] [1782045994.116171005] [rosbag2_recorder]: Listening for topics...
+[ros2-1] [INFO] [1782045994.116248914] [rosbag2_recorder]: Recording...
+[ros2-1] [INFO] [1782045994.116253714] [rosbag2_recorder]: Topics discovery started.
+[ros2-1] [INFO] [1782045994.194728215] [rosbag2_recorder]: Subscribed to topic '/motion_setpoint'
+[ros2-1] [INFO] [1782045994.203201898] [rosbag2_recorder]: Subscribed to topic '/heading_error'
+[ros2-1] [INFO] [1782045994.217786289] [rosbag2_recorder]: Subscribed to topic '/odom'
+[ros2-1] [INFO] [1782045994.221234389] [rosbag2_recorder]: Subscribed to topic '/wheel_velocity_controller/commands'
+[parameter_bridge-5] [INFO] [1782045994.680938301] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/clock (gz.msgs.Clock) -> /clock (rosgraph_msgs/msg/Clock)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1782045994.686078398] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/ir_front (gz.msgs.LaserScan) -> /ir_front (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[ros2-1] [INFO] [1782045994.690295387] [rosbag2_recorder]: Subscribed to topic '/clock'
+[parameter_bridge-5] [INFO] [1782045994.693642475] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/ir_left (gz.msgs.LaserScan) -> /ir_left (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1782045994.695574499] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/ir_right (gz.msgs.LaserScan) -> /ir_right (sensor_msgs/msg/LaserScan)] (Lazy 0)
+[parameter_bridge-5] [INFO] [1782045994.697055071] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/imu (gz.msgs.IMU) -> /imu (sensor_msgs/msg/Imu)] (Lazy 0)
+[ros2-1] [INFO] [1782045994.699182817] [rosbag2_recorder]: Subscribed to topic '/ir_front'
+[parameter_bridge-5] [INFO] [1782045994.699231923] [ros_gz_bridge]: Creating GZ->ROS Bridge: [/world/maze_16x16/dynamic_pose/info (gz.msgs.Pose_V) -> /ground_truth/tf (tf2_msgs/msg/TFMessage)] (Lazy 0)
+[ros2-1] [INFO] [1782045994.702068152] [rosbag2_recorder]: Subscribed to topic '/imu'
+[ros2-1] [INFO] [1782045994.703517620] [rosbag2_recorder]: Subscribed to topic '/ir_left'
+[ros2-1] [INFO] [1782045994.704903481] [rosbag2_recorder]: Subscribed to topic '/ir_right'
+[ros2-1] [INFO] [1782045994.712628477] [rosbag2_recorder]: Subscribed to topic '/ground_truth/tf'
+[create-4] [INFO] [1782045994.950069513] [spawn_micromouse]: Waiting messages on topic [robot_description].
+[create-4] [INFO] [1782045995.050486458] [spawn_micromouse]: Entity creation successful.
+[INFO] [create-4]: process has finished cleanly [pid 44476]
+[INFO] [spawner-8]: process started with pid [44627]
+[INFO] [spawner-9]: process started with pid [44628]
+[spawner-9] [INFO] [1782045995.839912252] [spawner_wheel_velocity_controller]: waiting for service /controller_manager/list_controllers to become available...
+[gazebo-2] [INFO] [1782045996.272152293] [gz_ros_control]: Loading controller_manager
+[gazebo-2] [INFO] [1782045996.309930338] [controller_manager]: Using ROS clock for triggering controller manager cycles.
+[gazebo-2] [INFO] [1782045996.324764062] [controller_manager]: Subscribing to '/robot_description' topic for robot description.
+[gazebo-2] [WARN] [1782045996.332126780] [gz_ros_control]: Waiting RM to load and initialize hardware...
+[gazebo-2] [WARN] [1782045997.323811347] [controller_manager]: Waiting for data on 'robot_description' topic to finish initialization
+[gazebo-2] [INFO] [1782045997.350120336] [controller_manager]: Received robot description from topic.
+[gazebo-2] [INFO] [1782045997.350230301] [controller_manager]: Enforcing command limits is disabled. Command limits from URDF will be ignored.
+[gazebo-2] [INFO] [1782045997.363085742] [gz_ros_control]: The position_proportional_gain has been set to: 0.1
+[gazebo-2] [INFO] [1782045997.363268228] [gz_ros_control]: Loading joint: left_wheel_joint
+[gazebo-2] [INFO] [1782045997.363301237] [gz_ros_control]:      State:
+[gazebo-2] [INFO] [1782045997.363318185] [gz_ros_control]:               position
+[gazebo-2] [INFO] [1782045997.363344297] [gz_ros_control]:               velocity
+[gazebo-2] [INFO] [1782045997.363363906] [gz_ros_control]:      Command:
+[gazebo-2] [INFO] [1782045997.363382627] [gz_ros_control]:               velocity
+[gazebo-2] [INFO] [1782045997.363468155] [gz_ros_control]: Loading joint: right_wheel_joint
+[gazebo-2] [INFO] [1782045997.363484808] [gz_ros_control]:      State:
+[gazebo-2] [INFO] [1782045997.363492395] [gz_ros_control]:               position
+[gazebo-2] [INFO] [1782045997.363501854] [gz_ros_control]:               velocity
+[gazebo-2] [INFO] [1782045997.363508555] [gz_ros_control]:      Command:
+[gazebo-2] [INFO] [1782045997.363515255] [gz_ros_control]:               velocity
+[gazebo-2] [INFO] [1782045997.363963490] [gz_ros_control]: Loading sensor: imu_sensor
+[gazebo-2] [INFO] [1782045997.364073159] [gz_ros_control]:      State:
+[gazebo-2] [INFO] [1782045997.364494100] [controller_manager]: Initialize hardware 'micromouse_hardware'
+[gazebo-2] [WARN] [1782045997.364572139] [controller_manager.hardware_component.system.micromouse_hardware]: Executor is not available during hardware component initialization for 'micromouse_hardware'. Skipping node creation!
+[gazebo-2] [INFO] [1782045997.364836311] [controller_manager]: Successful initialization of hardware 'micromouse_hardware'
+[gazebo-2] [INFO] [1782045997.365028848] [controller_manager]: Activating component 'micromouse_hardware'.
+[gazebo-2] [INFO] [1782045997.365101764] [resource_manager]: 'configure' hardware 'micromouse_hardware'
+[gazebo-2] [INFO] [1782045997.365115756] [gz_ros_control]: System Successfully configured!
+[gazebo-2] [INFO] [1782045997.365130240] [resource_manager]: Successful 'configure' of hardware 'micromouse_hardware'
+[gazebo-2] [INFO] [1782045997.365144922] [resource_manager]: 'activate' hardware 'micromouse_hardware'
+[gazebo-2] [INFO] [1782045997.365169260] [resource_manager]: Successful 'activate' of hardware 'micromouse_hardware'
+[gazebo-2] [WARN] [1782045997.365329576] [controller_manager]: Component 'micromouse_hardware' does not have read or write statistics initialized, skipping registration.
+[gazebo-2] [INFO] [1782045997.365350466] [controller_manager]: Resource Manager has been successfully initialized. Starting Controller Manager services...
+[gazebo-2] [WARN] [1782045998.618820908] [gz_ros_control]:  Desired controller update period (0.005 s) is slower than the gazebo simulation period (0.002 s).
+[gazebo-2] [INFO] [1782045999.135307908] [gz_ros_control]: IMU imu_sensor has a topic name: imu
+[gazebo-2] [INFO] [1782045999.568354752] [controller_manager]: Loading controller : 'wheel_velocity_controller' of type 'velocity_controllers/JointGroupVelocityController'
+[gazebo-2] [INFO] [1782045999.568486986] [controller_manager]: Loading controller 'wheel_velocity_controller'
+[gazebo-2] [INFO] [1782045999.580526165] [controller_manager]: Controller 'wheel_velocity_controller' node arguments: --ros-args --params-file /home/acer/workspace/rws/micromouse_ws/install/micromouse_control/share/micromouse_control/config/controllers.yaml -p use_sim_time:=true --param use_sim_time:=true
+[spawner-9] [INFO] [1782045999.622776507] [spawner_wheel_velocity_controller]: Loaded wheel_velocity_controller
+[gazebo-2] [INFO] [1782045999.723899816] [controller_manager]: Configuring controller: 'wheel_velocity_controller'
+[gazebo-2] [INFO] [1782045999.728965687] [wheel_velocity_controller]: configure successful
+[gazebo-2] [INFO] [1782045999.826702453] [controller_manager]: Activating controllers: [ wheel_velocity_controller ]
+[gazebo-2] [INFO] [1782045999.845652862] [wheel_velocity_controller]: activate successful
+[gazebo-2] [INFO] [1782045999.845896933] [controller_manager]: Successfully switched controllers!
+[spawner-9] [INFO] [1782045999.867237501] [spawner_wheel_velocity_controller]: Configured and activated wheel_velocity_controller
+[spawner-8] [INFO] [1782046000.173625547] [spawner_joint_state_broadcaster]: waiting for service /controller_manager/list_controllers to become available...
+[INFO] [spawner-9]: process has finished cleanly [pid 44628]
+[gazebo-2] [INFO] [1782046002.981483365] [controller_manager]: Loading controller : 'joint_state_broadcaster' of type 'joint_state_broadcaster/JointStateBroadcaster'
+[gazebo-2] [INFO] [1782046002.981690189] [controller_manager]: Loading controller 'joint_state_broadcaster'
+[gazebo-2] [INFO] [1782046003.004035581] [controller_manager]: Controller 'joint_state_broadcaster' node arguments: --ros-args --params-file /home/acer/workspace/rws/micromouse_ws/install/micromouse_control/share/micromouse_control/config/controllers.yaml -p use_sim_time:=true --param use_sim_time:=true
+[spawner-8] [INFO] [1782046003.053873460] [spawner_joint_state_broadcaster]: Loaded joint_state_broadcaster
+[gazebo-2] [INFO] [1782046003.057727207] [controller_manager]: Configuring controller: 'joint_state_broadcaster'
+[gazebo-2] [INFO] [1782046003.057948633] [joint_state_broadcaster]: 'joints' or 'interfaces' parameter is empty. All available state interfaces will be published
+[ros2-1] [INFO] [1782046003.071578614] [rosbag2_recorder]: Subscribed to topic '/joint_states'
+[ros2-1] [INFO] [1782046003.071839444] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[ros2-1] [INFO] [1782046003.071850945] [rosbag2_recorder]: Topics discovery stopped.
+[gazebo-2] [INFO] [1782046003.111022088] [controller_manager]: Activating controllers: [ joint_state_broadcaster ]
+[gazebo-2] [INFO] [1782046003.116534127] [controller_manager]: Successfully switched controllers!
+[spawner-8] [INFO] [1782046003.127702322] [spawner_joint_state_broadcaster]: Configured and activated joint_state_broadcaster
+[pid_controller_node-6] [INFO] [1782046003.132635094] [pid_controller_node]: IMU heading reference active
+[INFO] [spawner-8]: process has finished cleanly [pid 44627]
+[solver_node-7] [WARN] [1782046064.958344748] [solver_node]: heading 23.6 deg off E - issuing corrective turn
+[solver_node-7] [WARN] [1782046067.408109749] [solver_node]: heading 3.6 deg off E - issuing corrective turn
+[solver_node-7] [WARN] [1782046068.358185530] [solver_node]: IR collision detected heading E from (2,10) at 46% of cell - undetected wall, replanning
+[solver_node-7] [INFO] [1782046109.942105945] [solver_node]: explore: reached goal at (7,7) after 86.84 s
+[solver_node-7] [INFO] [1782046109.942953543] [solver_node]: explore: now returning to start (0,0)
+[solver_node-7] [WARN] [1782046122.442083595] [solver_node]: heading 2.9 deg off W - issuing corrective turn
+[solver_node-7] [WARN] [1782046232.573137824] [solver_node]: heading 3.2 deg off W - issuing corrective turn
+[solver_node-7] [INFO] [1782046260.701740216] [solver_node]: explore: back at start, mapping complete
+[solver_node-7] [INFO] [1782046260.702310956] [solver_node]: saved map to /tmp/micromouse_map.txt
+[solver_node-7] [INFO] [1782046260.702987186] [solver_node]: starting speed run at 0.30 m/s
+[solver_node-7] [WARN] [1782046307.436785524] [solver_node]: IR collision detected heading E from (5,9) at 7% of cell - undetected wall, replanning
+[solver_node-7] [INFO] [1782046311.388441850] [solver_node]: speed run complete: reached goal in 41.29 s
+[solver_node-7] [INFO] [1782046311.436729374] [solver_node]: finished at (7,8), total elapsed 253.62 s

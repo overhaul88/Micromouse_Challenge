@@ -131,7 +131,8 @@ public:
     decel_zone_ = this->declare_parameter("decel_zone", 0.06);
     position_tolerance_ = this->declare_parameter("position_tolerance", 0.015);
     heading_tolerance_ = this->declare_parameter("heading_tolerance", 0.05);
-    wall_threshold_ = this->declare_parameter("wall_detection_threshold", 0.10);
+    wall_threshold_ = this->declare_parameter("wall_detection_threshold", 0.075);
+    open_threshold_ = this->declare_parameter("wall_open_threshold", 0.15);
     control_rate_hz_ = this->declare_parameter("control_rate_hz", 20.0);
     // Generous relative to the nominal cell_size_/speed crossing time, but
     // bounded - if a DRIVE makes no forward progress for this long,
@@ -160,7 +161,7 @@ public:
     // Defensive guard: don't trust IR readings for wall-sensing unless
     // actually close to cardinal-aligned, since the sensing math assumes
     // the front/left/right rays point along exact cardinal axes.
-    max_sense_misalignment_ = this->declare_parameter("max_sense_misalignment", 0.15);
+    max_sense_misalignment_ = this->declare_parameter("max_sense_misalignment", 0.05);
 
     // Phase / mode configuration.
     mode_ = this->declare_parameter("mode", std::string("auto"));
@@ -298,30 +299,57 @@ private:
       // so fall through and decide the next move toward the new target.
     }
 
-    if (sensing_) {
-      // sense_walls() assumes the front/left/right rays point along exact
-      // cardinal axes. With cross-track correction in DRIVE and the
-      // heading_tolerance_ check in TURN the heading should already be
-      // well-aligned; this skips reporting from a tilted reading rather
-      // than feeding a corrupted wall into the floodfill.
+    // Collision recovery: if heading is more than max_sense_misalignment_ off
+    // the nearest cardinal (can happen when a wall collision physically rotates
+    // the body), issue an active corrective turn before sensing or routing.
+    // Without this the PID would hold whatever heading it last received (the
+    // collision-rotated one) and the robot would be stuck forever in SENSE.
+    // This check is unconditional (explore and speed-run) because a rotated
+    // body can never sense or route reliably regardless of mode.
+    {
+      Direction snapped = quantize_heading(current_heading_);
       double misalignment = std::fabs(
-        wrap_to_pi(heading_of(quantize_heading(current_heading_)) - current_heading_));
+        wrap_to_pi(heading_of(snapped) - current_heading_));
       if (misalignment > max_sense_misalignment_) {
         RCLCPP_WARN_THROTTLE(
           this->get_logger(), *this->get_clock(), 2000,
-          "skipping sense: heading misaligned by %.1f deg", misalignment * 180.0 / M_PI);
+          "heading %.1f deg off %s - issuing corrective turn",
+          misalignment * 180.0 / M_PI, direction_name(snapped));
+        publish_setpoint(heading_of(snapped), 0.0);
         return;
       }
+    }
+
+    if (sensing_) {
       sense_walls();
     }
 
     auto next = floodfill_.next_direction(current_col_, current_row_, current_facing_);
     if (!next.has_value()) {
-      RCLCPP_ERROR(
-        this->get_logger(),
-        "no reachable open neighbor at (%d,%d) - holding position", current_col_, current_row_);
-      state_ = State::DONE;
-      return;
+      // Dead-end in the speed run: the frozen map may have stale walls from
+      // the explore phase. Re-enable sensing for one cycle, update the map
+      // with fresh IR readings, and retry before giving up.
+      if (phase_ == Phase::SPEED_RUN && !sensing_) {
+        RCLCPP_WARN(
+          this->get_logger(),
+          "speed-run dead end at (%d,%d) - re-sensing to correct stale map",
+          current_col_, current_row_);
+        sensing_ = true;
+        double misalignment = std::fabs(
+          wrap_to_pi(heading_of(quantize_heading(current_heading_)) - current_heading_));
+        if (misalignment <= max_sense_misalignment_) {
+          sense_walls();
+        }
+        next = floodfill_.next_direction(current_col_, current_row_, current_facing_);
+      }
+      if (!next.has_value()) {
+        RCLCPP_ERROR(
+          this->get_logger(),
+          "no reachable open neighbor at (%d,%d) - holding position",
+          current_col_, current_row_);
+        state_ = State::DONE;
+        return;
+      }
     }
 
     if (*next == current_facing_) {
@@ -341,15 +369,18 @@ private:
     Direction left_dir = quantize_heading(current_heading_ + M_PI / 2.0);
     Direction right_dir = quantize_heading(current_heading_ - M_PI / 2.0);
 
-    if (ir_front_range_ < wall_threshold_) {
-      floodfill_.report_wall(current_col_, current_row_, front_dir);
-    }
-    if (ir_left_range_ < wall_threshold_) {
-      floodfill_.report_wall(current_col_, current_row_, left_dir);
-    }
-    if (ir_right_range_ < wall_threshold_) {
-      floodfill_.report_wall(current_col_, current_row_, right_dir);
-    }
+    auto sense_one = [&](double range, Direction dir) {
+      if (range < wall_threshold_) {
+        floodfill_.report_wall(current_col_, current_row_, dir);
+      } else if (range > open_threshold_) {
+        // Clear any previously-reported false wall in this direction so the
+        // map self-corrects as the robot re-visits cells with fresh readings.
+        floodfill_.report_open(current_col_, current_row_, dir);
+      }
+    };
+    sense_one(ir_front_range_, front_dir);
+    sense_one(ir_left_range_, left_dir);
+    sense_one(ir_right_range_, right_dir);
   }
 
   void do_turn()
@@ -432,6 +463,31 @@ private:
     // reaching the cell pitch, and it never carries absolute odom drift.
     double traveled = (x_ - drive_start_x_) * travel_x_ + (y_ - drive_start_y_) * travel_y_;
     double remaining = cell_size_ - traveled;
+
+    // If the front IR sees a wall while we're still in the first half of the
+    // crossing, the robot is heading into an undetected wall. Stop and report
+    // it so the floodfill routes around it.
+    //
+    // The "first half" guard (traveled < cell_size_/2) prevents a false
+    // trigger: the target cell's own EXIT wall starts entering IR range at
+    // roughly 60-70% of the crossing, which is safely past this threshold.
+    //
+    // This check is unconditional (fires in both explore and speed-run) because
+    // a physical wall must always win over a planned path, regardless of mode.
+    if (traveled < cell_size_ * 0.5 && ir_front_range_ < wall_threshold_) {
+      RCLCPP_WARN(
+        this->get_logger(),
+        "IR collision detected heading %s from (%d,%d) at %.0f%% of cell - "
+        "undetected wall, replanning",
+        direction_name(target_dir_), current_col_, current_row_,
+        100.0 * traveled / cell_size_);
+      floodfill_.report_wall(current_col_, current_row_, target_dir_);
+      // Snap to nearest cardinal so the PID starts correcting the collision-
+      // induced rotation immediately rather than holding the rotated heading.
+      publish_setpoint(heading_of(quantize_heading(current_heading_)), 0.0);
+      state_ = State::SENSE;
+      return;
+    }
 
     double speed = phase_speed_;
     if (will_stop_at_target_ && remaining < decel_zone_) {
@@ -524,6 +580,16 @@ private:
   void start_speed_run()
   {
     floodfill_.set_goal_cells(goal_block_);  // run target is always the center
+    if (floodfill_.distance(current_col_, current_row_) == micromouse_solver::kUnreachable) {
+      RCLCPP_ERROR(
+        this->get_logger(),
+        "speed run aborted: no path to goal from (%d,%d) in known map - "
+        "explore map is incomplete or corrupted",
+        current_col_, current_row_);
+      phase_ = Phase::FINISHED;
+      state_ = State::DONE;
+      return;
+    }
     sensing_ = false;
     phase_speed_ = run_speed_;
     phase_ = Phase::SPEED_RUN;
@@ -563,6 +629,7 @@ private:
   double position_tolerance_;
   double heading_tolerance_;
   double wall_threshold_;
+  double open_threshold_;
   double control_rate_hz_;
   double drive_timeout_s_;
   double cross_track_kp_;

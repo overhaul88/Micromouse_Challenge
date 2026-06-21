@@ -87,6 +87,28 @@ public:
     return true;
   }
 
+  // Clears a previously-reported wall on side `d` of cell (c, r). Outer
+  // boundary walls (where the neighbor would be out of bounds) are never
+  // removed. Returns true if the wall was actually cleared (new information).
+  bool report_open(int c, int r, Direction d)
+  {
+    if (!in_bounds(c, r)) {
+      return false;
+    }
+    auto [nc, nr] = step(c, r, d);
+    if (!in_bounds(nc, nr)) {
+      return false;  // outer boundary - never open
+    }
+    if (!set_wall(c, r, d, false)) {
+      return false;  // already open
+    }
+    std::deque<std::pair<int, int>> queue;
+    queue.push_back({c, r});
+    queue.push_back({nc, nr});
+    propagate(queue);
+    return true;
+  }
+
   bool is_open(int c, int r, Direction d) const
   {
     return in_bounds(c, r) && !get_wall(c, r, d);
