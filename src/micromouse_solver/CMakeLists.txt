@@ -13,6 +13,7 @@ find_package(rclcpp REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(micromouse_msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
 
 include_directories(include)
 
@@ -22,6 +23,7 @@ ament_target_dependencies(solver_node
   nav_msgs
   sensor_msgs
   micromouse_msgs
+  visualization_msgs
 )
 
 install(TARGETS

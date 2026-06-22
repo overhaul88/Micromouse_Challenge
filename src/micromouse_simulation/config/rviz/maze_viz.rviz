@@ -1,0 +1,91 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Floodfill1
+      Splitter Ratio: 0.5
+    Tree Height: 205
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Expanded: ~
+    Name: Tool Properties
+    Splitter Ratio: 0.5886790156364441
+  - Class: rviz_common/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Floodfill
+      Namespaces:
+        cells: true
+        dtext: true
+        info: true
+        robot: true
+        walls: true
+      Topic:
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /maze_viz
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 26; 26; 26
+    Fixed Frame: odom
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Angle: -0.4599999487400055
+      Class: rviz_default_plugins/TopDownOrtho
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Scale: 634.8153076171875
+      Target Frame: <Fixed Frame>
+      Value: TopDownOrtho (rviz_default_plugins)
+      X: 1.440000057220459
+      Y: 1.440000057220459
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 960
+  Hide Left Dock: false
+  Hide Right Dock: true
+  QMainWindow State: 000000ff00000000fd00000001000000000000019b00000391fc0200000004fb000000100044006900730070006c006100790073010000001400000156000000c700fffffffb0000001200530065006c0065006300740069006f006e0100000170000000a60000005c00fffffffb0000001e0054006f006f006c002000500072006f0070006500720074006900650073010000021c000000a70000005c00fffffffb0000000a0056006900650077007301000002c9000000dc000000a000ffffff0000035f0000039100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730000000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1280
+  X: 589
+  Y: -23

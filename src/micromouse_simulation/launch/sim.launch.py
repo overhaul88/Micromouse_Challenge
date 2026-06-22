@@ -7,6 +7,7 @@ and wheel_velocity_controller once the robot actually exists in the sim.
 Run:
   ros2 launch micromouse_simulation sim.launch.py
   ros2 launch micromouse_simulation sim.launch.py mode:=auto record:=true
+  ros2 launch micromouse_simulation sim.launch.py mode:=auto viz:=true
 """
 import datetime
 import os
@@ -33,6 +34,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 BAG_TOPICS = [
     "/clock",
     "/odom",
+    "/odom_corrected",
     "/imu",
     "/ir_front",
     "/ir_left",
@@ -51,6 +53,7 @@ def generate_launch_description():
     map_path = LaunchConfiguration("map_path")
     record = LaunchConfiguration("record")
     bag_dir = LaunchConfiguration("bag_dir")
+    viz = LaunchConfiguration("viz")
     declare_mode = DeclareLaunchArgument(
         "mode",
         default_value="auto",
@@ -76,6 +79,11 @@ def generate_launch_description():
         "record",
         default_value="false",
         description="record a rosbag of the run for offline analysis",
+    )
+    declare_viz = DeclareLaunchArgument(
+        "viz",
+        default_value="false",
+        description="launch RViz2 with the floodfill visualizer (viz:=true)",
     )
     declare_bag_dir = DeclareLaunchArgument(
         "bag_dir",
@@ -188,10 +196,22 @@ def generate_launch_description():
         output="screen",
     )
 
+    rviz_config = os.path.join(simulation_pkg, "config", "rviz", "maze_viz.rviz")
+    rviz = Node(
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        arguments=["-d", rviz_config],
+        condition=IfCondition(viz),
+        parameters=[{"use_sim_time": True}],
+        output="screen",
+    )
+
     return LaunchDescription([
         declare_mode,
         declare_map_path,
         declare_record,
+        declare_viz,
         declare_bag_dir,
         record_bag,
         gz_sim,
@@ -201,4 +221,5 @@ def generate_launch_description():
         delayed_controllers,
         pid_controller,
         solver,
+        rviz,
     ])
