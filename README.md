@@ -91,6 +91,8 @@ The entire interface between these two worlds is a message with exactly **two fl
 numbers**: a target heading and a target speed. That's it. A speed of zero means "rotate in
 place to face that heading." Feedback flows the other way as an odometry estimate.
 
+![ROS Graph](images/rosgraph.png)
+
 ---
 
 ## The robot
